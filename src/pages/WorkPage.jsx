@@ -53,7 +53,7 @@ const WorkPage = () => {
                     <p className="text-blue-500 font-mono tracking-widest uppercase text-sm">
                         Portfolio
                     </p>
-                    <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-none overflow-hidden">
+                    <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-none overflow-hidden">
                         <span className="inline-block work-title-char">S</span>
                         <span className="inline-block work-title-char">E</span>
                         <span className="inline-block work-title-char">L</span>
@@ -86,7 +86,7 @@ const WorkPage = () => {
                         playsInline
                     >
                         {/* Using intro video as placeholder - User can replace path */}
-                        <source src="/assets/home_page/logo/intro_video_49mb.mp4" type="video/mp4" />
+                        <source src="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/home_page/logo/intro_video_49mb.mp4" type="video/mp4" />
                         {/* <source src="/assets/home_page/logo/intro_video.mp4" type="video/mp4" /> */}
 
                     </video>

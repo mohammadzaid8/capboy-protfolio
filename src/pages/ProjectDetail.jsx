@@ -6,6 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const BASE_URL = "https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev"
+
 // Dummy Data Lookup (Ideally this comes from a CMS or separate data file)
 const PROJECTS = {
     'art-of-speed': {
@@ -16,13 +18,13 @@ const PROJECTS = {
         engine: 'Unreal Engine 5.4 (Path Tracing / Lumen) and blender',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: '/assets/works/01_BMW/main.mp4' },
-            { type: 'image', src: '/assets/works/01_BMW/01.jpg' },
-            { type: 'image', src: '/assets/works/01_BMW/02.jpg' },
-            { type: 'image', src: '/assets/works/01_BMW/03.jpg' },
-            { type: 'image', src: '/assets/works/01_BMW/04.jpg' },
-            { type: 'image', src: '/assets/works/01_BMW/05.jpg' },
-            { type: 'image', src: '/assets/works/01_BMW/06.jpg' }
+            { type: 'video', src: `${BASE_URL}/assets/works/01_BMW/main.mp4` },
+            { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/01.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/02.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/03.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/04.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/05.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/06.jpg` }
         ]
     },
     'jet-plan': {
@@ -35,13 +37,13 @@ Using Blender, I developed detailed models and textures for the jet's interior a
         engine: 'Blender 4.4.1',
         youtubeLink: '#',
         media: [
-            { type: 'image', src: '/assets/works/02_jet_plan/01.png' },
-            { type: 'image', src: '/assets/works/02_jet_plan/02.png' },
-            { type: 'image', src: '/assets/works/02_jet_plan/03.png' },
-            { type: 'image', src: '/assets/works/02_jet_plan/04.png' },
-            { type: 'image', src: '/assets/works/02_jet_plan/05.png' },
-            { type: 'image', src: '/assets/works/02_jet_plan/06.png' },
-            { type: 'image', src: '/assets/works/02_jet_plan/07.png' }
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/01.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/02.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/03.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/04.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/05.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/06.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/02_jet_plan/07.png` }
         ]
     },
     'mustang': {
@@ -52,13 +54,13 @@ Using Blender, I developed detailed models and textures for the jet's interior a
         engine: 'Unreal Engine 5.4 (Path Tracing / Lumen)',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: '/assets/works/03_mustang/main.mp4' },
-            { type: 'image', src: '/assets/works/03_mustang/01.png' },
-            { type: 'image', src: '/assets/works/03_mustang/02.png' },
-            { type: 'image', src: '/assets/works/03_mustang/03.png' },
-            { type: 'image', src: '/assets/works/03_mustang/04.png' },
-            { type: 'image', src: '/assets/works/03_mustang/05.jpg' },
-            { type: 'image', src: '/assets/works/03_mustang/06.png' }
+            { type: 'video', src: `${BASE_URL}/assets/works/03_mustang/main.mp4` },
+            { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/01.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/02.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/03.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/04.png` },
+            { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/05.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/06.png` }
         ]
     },
     'yacht': {
@@ -69,13 +71,13 @@ Using Blender, I developed detailed models and textures for the jet's interior a
         engine: 'Blender water simulation',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: '/assets/works/04_yatch/main.mp4' },
-            { type: 'image', src: '/assets/works/04_yatch/01.jpg' },
-            { type: 'image', src: '/assets/works/04_yatch/02.jpg' },
-            { type: 'image', src: '/assets/works/04_yatch/03.jpg' },
-            { type: 'image', src: '/assets/works/04_yatch/04.jpg' },
-            { type: 'image', src: '/assets/works/04_yatch/05.jpg' },
-            { type: 'image', src: '/assets/works/04_yatch/06.jpg' }
+            { type: 'video', src: `${BASE_URL}/assets/works/04_yatch/main.mp4` },
+            { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/01.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/02.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/03.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/04.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/05.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/06.jpg` }
         ]
     },
     'porsche': {
@@ -86,13 +88,13 @@ Using Blender, I developed detailed models and textures for the jet's interior a
         engine: 'Unreal Engine 5.4 (Path Tracing / Lumen)',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: '/assets/works/05_porche/main.mp4' },
-            { type: 'image', src: '/assets/works/05_porche/01.jpg' },
-            { type: 'image', src: '/assets/works/05_porche/02.jpg' },
-            { type: 'image', src: '/assets/works/05_porche/03.jpg' },
-            { type: 'image', src: '/assets/works/05_porche/04.jpg' },
-            { type: 'image', src: '/assets/works/05_porche/05.jpg' },
-            { type: 'image', src: '/assets/works/05_porche/06.jpg' }
+            { type: 'video', src: `${BASE_URL}/assets/works/05_porche/main.mp4` },
+            { type: 'image', src: `${BASE_URL}/assets/works/05_porche/01.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/05_porche/02.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/05_porche/03.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/05_porche/04.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/05_porche/05.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/05_porche/06.jpg` }
         ]
     },
     'game-environment': {
@@ -103,13 +105,13 @@ Using Blender, I developed detailed models and textures for the jet's interior a
         engine: 'Blender 4.4.1',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: '/assets/works/06_game_env/main.mp4' },
-            { type: 'image', src: '/assets/works/06_game_env/01.jpg' },
-            { type: 'image', src: '/assets/works/06_game_env/02.jpg' },
-            { type: 'image', src: '/assets/works/06_game_env/03.jpg' },
-            { type: 'image', src: '/assets/works/06_game_env/04.jpg' },
-            { type: 'image', src: '/assets/works/06_game_env/05.jpg' },
-            { type: 'image', src: '/assets/works/06_game_env/06.jpg' }
+            { type: 'video', src: `${BASE_URL}/assets/works/06_game_env/main.mp4` },
+            { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/01.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/02.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/03.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/04.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/05.jpg` },
+            { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/06.jpg` }
         ]
     }
 }
@@ -153,7 +155,7 @@ const ProjectDetail = () => {
     if (!project) return <div className="text-white">Project not found</div>
 
     return (
-        <div ref={containerRef} className="w-full min-h-screen bg-[#0a0a0a] text-white">
+        <div ref={containerRef} className="w-full min-h-screen bg-[#0a0a0a] text-white mb-24">
 
 
 

@@ -58,7 +58,7 @@ const Intro = () => {
                     playsInline
                     className="w-full h-full object-cover"
                 >
-                    <source src="/assets/home_page/logo/intro_video_49mb.mp4" type="video/mp4" />
+                    <source src="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/home_page/logo/intro_video_49mb.mp4" type="video/mp4" />
                     {/* <source src="/assets/home_page/logo/intro_video.mp4" type="video/mp4" /> */}
 
                     Your browser does not support the video tag.
@@ -82,7 +82,7 @@ const Intro = () => {
                     <div className="w-full flex justify-center">
                         <div className="w-full">
                             <img
-                                src="/assets/home_page/logo/intro_logo.png"
+                                src="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/home_page/logo/intro_logo.png"
                                 alt="Artix Studios"
                                 className="w-full h-auto object-contain"
                             />

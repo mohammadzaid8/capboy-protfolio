@@ -116,7 +116,7 @@ const Header = () => {
                         </span>
                     </Link>
 
-                    {['About', 'Work', 'Services', 'Contact'].map((item, index) => {
+                    {['About', 'Work', 'Services'].map((item, index) => {
                         // Define which items are full pages vs hash links
                         const isPage = ['About', 'Work', 'Contact'].includes(item)
 
@@ -127,9 +127,9 @@ const Header = () => {
                         else href = `/#${item.toLowerCase()}` // Services stays hash
 
                         return (
-                            <a
+                            <Link
                                 key={item}
-                                href={href}
+                                to={href}
                                 onClick={() => isPage ? setIsOpen(false) : handleNav(item.toLowerCase())}
                                 className="menu-link group flex items-baseline gap-4 border-b border-white/10 pb-2 md:pb-4 hover:border-white transition-colors"
                             >
@@ -137,7 +137,7 @@ const Header = () => {
                                 <span className="text-3xl md:text-5xl font-light tracking-tight group-hover:translate-x-2 transition-transform duration-300 ease-out">
                                     {item}
                                 </span>
-                            </a>
+                            </Link>
                         )
                     })}
                 </nav>

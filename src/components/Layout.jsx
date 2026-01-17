@@ -1,7 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Helper } from '@react-three/drei'
+
+gsap.registerPlugin(ScrollTrigger)
 import Footer from './Footer'
 import CallToAction from './CallToAction'
 import Header from './Header'
@@ -11,29 +15,34 @@ const Layout = ({ children }) => {
     const { pathname } = useLocation()
 
     useEffect(() => {
-        // Initialize Lenis
+        // Initialize Lenis with "super smooth" settings
         const lenis = new Lenis({
-            duration: 1.2,
+            duration: 2.5, // Much slower, smoother settle
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
-            mouseMultiplier: 1,
+            mouseMultiplier: 1.5, // Increased sensitivity for smoother control
             smoothTouch: false,
             touchMultiplier: 2,
         })
 
         lenisRef.current = lenis
 
-        function raf(time) {
-            lenis.raf(time)
-            requestAnimationFrame(raf)
-        }
+        // Synchronize Lenis with GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update)
 
-        requestAnimationFrame(raf)
+        // Use GSAP ticker to drive Lenis for perfect synchronization
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000)
+        })
+
+        // Disable lag smoothing to prevent jumpiness during heavy load
+        gsap.ticker.lagSmoothing(0)
 
         return () => {
             lenis.destroy()
+            gsap.ticker.remove(lenis.raf)
         }
     }, [])
 

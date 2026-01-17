@@ -19,11 +19,17 @@ const CallToAction = () => {
                     style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
                 </div>
 
-                {/* Corner Accents (The "Viewfinder" look) - Updated to Gray & Sharp */}
-                <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-gray-500 z-10" />
-                <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-gray-500 z-10" />
-                <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-gray-500 z-10" />
-                <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-gray-500 z-10" />
+                {/* Corner Accents (The "Viewfinder" look) */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white z-10" />
+                <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white z-10" />
+                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white z-10" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-white z-10" />
+
+                {/* Center Ticks for extra tech feel */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-white z-10" style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }} />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-white z-10" style={{ clipPath: 'polygon(0 100%, 100% 100%, 50% 0)' }} />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-white z-10" style={{ clipPath: 'polygon(0 0, 0 100%, 100% 50%)' }} />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-white z-10" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 50%)' }} />
 
                 {/* Content */}
                 <div className="relative z-10 max-w-2xl px-4">

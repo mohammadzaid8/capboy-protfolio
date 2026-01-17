@@ -1,110 +1,144 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react'
 
-const MouseTrail = ({
-    color = '#ffffff',
-    size = 4,
-    spacing = 10,
-    trailLength = 20, // Not strictly used if we fade by time, but good for limiting max dots if needed
-    fadeDuration = 0.5, // seconds
-    className = ''
-}) => {
-    const canvasRef = useRef(null);
-    const fadeDurationMs = fadeDuration * 1000;
+const TRAIL_LENGTH = 20
+// Adjusted physics constants for smoother "snake" feel
+const STIFFNESS = 0.4 // Higher stiffness for closer following
+const DAMPING = 0.25 // Higher damping to prevent jitter/oscillation
+const DRAG = 0.9 // Friction
 
-    // Mutable state references
-    const dots = useRef([]);
-    const mouse = useRef({ x: 0, y: 0 });
-    const lastMouse = useRef({ x: 0, y: 0 });
-    const requestRef = useRef();
+const MouseTrail = ({ color = '#4f46e5' }) => {
+    const trailRefs = useRef([])
+    const mouseRef = useRef({ x: 0, y: 0 })
+    // Use a fixed position for initialization to avoid flying in from 0,0
+    const initialized = useRef(false)
+    const fadeOpacity = useRef(0) // Global opacity for the whole trail
+    const isMoving = useRef(false)
+    const moveTimeout = useRef()
+
+    // Physics state
+    const trail = useRef(new Array(TRAIL_LENGTH).fill(0).map(() => ({
+        x: 0, y: 0, vx: 0, vy: 0
+    })))
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        let width = window.innerWidth;
-        let height = window.innerHeight;
-
-        const handleResize = () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        };
+        // Init to center
+        const cx = window.innerWidth / 2
+        const cy = window.innerHeight / 2
+        mouseRef.current = { x: cx, y: cy }
+        trail.current.forEach(p => { p.x = cx; p.y = cy })
 
         const handleMouseMove = (e) => {
-            mouse.current.x = e.clientX;
-            mouse.current.y = e.clientY;
-
-            // Calculate distance from last dot
-            const dx = mouse.current.x - lastMouse.current.x;
-            const dy = mouse.current.y - lastMouse.current.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist >= spacing) {
-                // Add new dot
-                dots.current.push({
-                    x: mouse.current.x,
-                    y: mouse.current.y,
-                    timestamp: Date.now()
-                });
-                lastMouse.current.x = mouse.current.x;
-                lastMouse.current.y = mouse.current.y;
+            if (!initialized.current) {
+                // Snap all points to mouse on first move to prevent trails from center
+                trail.current.forEach(p => { p.x = e.clientX; p.y = e.clientY })
+                initialized.current = true
             }
-        };
 
-        const animate = () => {
-            ctx.clearRect(0, 0, width, height);
+            mouseRef.current.x = e.clientX
+            mouseRef.current.y = e.clientY
 
-            const now = Date.now();
+            isMoving.current = true
+            // Reset fade
+            fadeOpacity.current = 1
 
-            // Filter dead dots first to avoid processing unnecessary ones
-            // but for smooth fading we iterate and keep valid ones
-            const activeDots = [];
+            if (moveTimeout.current) clearTimeout(moveTimeout.current)
+            moveTimeout.current = setTimeout(() => {
+                isMoving.current = false
+            }, 100)
+        }
 
-            dots.current.forEach(dot => {
-                const age = now - dot.timestamp;
-                const progress = age / fadeDurationMs;
+        window.addEventListener('mousemove', handleMouseMove)
 
-                if (progress < 1) {
-                    const alpha = 1 - progress; // Fade out
+        let animationFrameId
 
-                    ctx.beginPath();
-                    ctx.arc(dot.x, dot.y, size, 0, Math.PI * 2);
-                    ctx.fillStyle = color;
-                    ctx.globalAlpha = alpha; // Apply fade
-                    ctx.fill();
-                    ctx.globalAlpha = 1; // Reset
+        const update = () => {
+            // physics loop
 
-                    activeDots.push(dot);
+            // Head follows mouse
+            // We use a slightly different "ease" approach for the head to be super tight
+            // or we use the same spring physics. Let's use spring for consistency but tighter.
+
+            let targetX = mouseRef.current.x
+            let targetY = mouseRef.current.y
+
+            // Global fade logic
+            if (!isMoving.current) {
+                fadeOpacity.current *= 0.9 // Fade out when stopped
+            } else {
+                fadeOpacity.current = 1
+            }
+
+            trail.current.forEach((point, i) => {
+                // Determine target
+                // If i=0, target is mouse. If >0, target is previous point.
+                // However, for a "snake" that doesn't stretch infinitely, 
+                // typically we want them to stay a certain distance or just spring to it.
+                // Spring physics:
+
+                const dx = targetX - point.x
+                const dy = targetY - point.y
+
+                // Physics calculation
+                // F = -k * x (Hooke's law-ish with damping)
+                point.vx += dx * STIFFNESS
+                point.vy += dy * STIFFNESS
+
+                // Damping / Friction
+                point.vx *= DAMPING
+                point.vy *= DAMPING
+
+                point.x += point.vx
+                point.y += point.vy
+
+                // Update target for the next point to be this point's current pos
+                targetX = point.x
+                targetY = point.y
+
+                // DOM Update
+                const el = trailRefs.current[i]
+                if (el) {
+                    const scale = 1 - (i / TRAIL_LENGTH) // Shrink towards tail
+                    // Base size 12px shrinking down
+                    const size = 12 * scale
+
+                    el.style.transform = `translate(${point.x - size / 2}px, ${point.y - size / 2}px)`
+                    el.style.width = `${size}px`
+                    el.style.height = `${size}px`
+                    // Opacity: Global fade * Tail fade
+                    el.style.opacity = (fadeOpacity.current * (scale * 0.8 + 0.2)).toFixed(2)
                 }
-            });
+            })
 
-            dots.current = activeDots;
-            requestRef.current = requestAnimationFrame(animate);
-        };
+            animationFrameId = requestAnimationFrame(update)
+        }
 
-        // Initial setup
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('mousemove', handleMouseMove);
-        requestRef.current = requestAnimationFrame(animate);
-
-        // Set initial last mouse position to prevent jump on first move
-        lastMouse.current = { x: width / 2, y: height / 2 };
+        update()
 
         return () => {
-            window.removeEventListener('resize', handleResize);
-            window.removeEventListener('mousemove', handleMouseMove);
-            cancelAnimationFrame(requestRef.current);
-        };
-    }, [color, size, spacing, fadeDurationMs]);
+            window.removeEventListener('mousemove', handleMouseMove)
+            cancelAnimationFrame(animationFrameId)
+            if (moveTimeout.current) clearTimeout(moveTimeout.current)
+        }
+    }, [color])
 
     return (
-        <canvas
-            ref={canvasRef}
-            className={`fixed top-0 left-0 w-full h-full pointer-events-none z-[99999] ${className}`}
-            style={{ mixBlendMode: 'screen' }} // Optional: nice blending with dark bg
-        />
-    );
-};
+        <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+            {trail.current.map((_, i) => (
+                <div
+                    key={i}
+                    ref={el => trailRefs.current[i] = el}
+                    className="absolute bg-white will-change-transform shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                    style={{
+                        backgroundColor: color,
+                        // initial styles
+                        width: '0px',
+                        height: '0px',
+                        opacity: 0
+                    }}
+                />
+            ))}
+        </div>
+    )
+}
 
-export default MouseTrail;
+export default MouseTrail

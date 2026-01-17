@@ -35,7 +35,7 @@ const About = () => {
     }, { scope: containerRef })
 
     return (
-        <div ref={containerRef} className="w-full min-h-screen bg-[#0a0a0a] text-white pt-32 pb-24 px-6 md:px-12">
+        <div ref={containerRef} className="w-full min-h-screen bg-[#0a0a0a] text-white pt-32 pb-24 mb-24 px-6 md:px-12">
             <div className="max-w-[1400px] mx-auto flex flex-col gap-24">
 
                 {/* Hero / Title Section */}
@@ -43,24 +43,14 @@ const About = () => {
                     <p className="about-content text-blue-400 font-mono tracking-widest uppercase text-sm">
                         About The Studio
                     </p>
-                    <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-none overflow-hidden">
-                        <span className="inline-block about-title-char">W</span>
-                        <span className="inline-block about-title-char">E</span>
-                        <span className="inline-block about-title-char">&nbsp;</span>
-                        <span className="inline-block about-title-char">C</span>
-                        <span className="inline-block about-title-char">R</span>
-                        <span className="inline-block about-title-char">A</span>
-                        <span className="inline-block about-title-char">F</span>
-                        <span className="inline-block about-title-char">T</span>
+                    <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-none overflow-hidden">
+                        <span className="inline-block about-title-char">WE</span>
+                        <span className="inline-block about-title-char">&nbsp; &nbsp;</span>
+                        <span className="inline-block about-title-char">CRAFT</span>
+                        <span className="inline-block about-title-char md:hidden">&nbsp;</span>
                         <br className="hidden md:block" />
-                        <span className="inline-block about-title-char">D</span>
-                        <span className="inline-block about-title-char">I</span>
-                        <span className="inline-block about-title-char">G</span>
-                        <span className="inline-block about-title-char">I</span>
-                        <span className="inline-block about-title-char">T</span>
-                        <span className="inline-block about-title-char">A</span>
-                        <span className="inline-block about-title-char">L</span>
-                        <span className="inline-block about-title-char">&nbsp;</span>
+                        <span className="inline-block about-title-char">DIGITAL</span>
+                        <span className="inline-block about-title-char">&nbsp; &nbsp;</span>
                         <span className="inline-block about-title-char text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
                             REALITY
                         </span>
@@ -74,7 +64,7 @@ const About = () => {
                     <div className="about-content w-full aspect-[4/5] md:aspect-square lg:aspect-[3/4] rounded-2xl overflow-hidden relative">
                         {/* Using a high-quality asset from existing files as a feature image */}
                         <img
-                            src="/assets/self/me.jpg"
+                            src="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/self/me.jpg"
                             alt="Founder"
                             className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 md:scale-110 hover:scale-100"
                         />
@@ -132,7 +122,7 @@ const About = () => {
                                 <a href="mailto:workwithcapboy@gmail.com" className="px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300">
                                     Email
                                 </a>
-                                <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300">
+                                <a href="https://www.instagram.com/capboy_creation?igsh=aTEwZGdpM2d3bnU2" target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300">
                                     Instagram
                                 </a>
                                 <a href="https://www.linkedin.com/in/sami-matadar-104a85300/" target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300">

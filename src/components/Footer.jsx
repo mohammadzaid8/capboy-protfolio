@@ -18,9 +18,9 @@ const Footer = () => {
                 {/* Column 2: Navigation */}
                 <div className="flex flex-col gap-2">
                     <Link to="/" className="text-gray-500 text-sm hover:text-white transition-colors">Home</Link>
-                    <a href="/work" className="text-gray-500 text-sm hover:text-white transition-colors">Work</a>
+                    <Link to="/work" className="text-gray-500 text-sm hover:text-white transition-colors">Work</Link>
                     <Link to="/about" className="text-gray-500 text-sm hover:text-white transition-colors">About</Link>
-                    <a href="/#services" className="text-gray-500 text-sm hover:text-white transition-colors">Services</a>
+                    <Link to="/#services" className="text-gray-500 text-sm hover:text-white transition-colors">Services</Link>
                     {/* <a href="/#contact" className="text-white text-sm font-medium hover:text-gray-300 transition-colors mt-2">Contact</a> */}
                 </div>
 
@@ -32,8 +32,8 @@ const Footer = () => {
 
                 {/* Column 4: Socials */}
                 <div className="flex flex-col gap-2">
-                    <a href="#" className="text-gray-500 text-sm hover:text-white transition-colors">LinkedIn</a>
-                    <a href="#" className="text-gray-500 text-sm hover:text-white transition-colors">Instagram</a>
+                    <a target='new' href="https://www.linkedin.com/in/sami-matadar-104a85300/" className="text-gray-500 text-sm hover:text-white transition-colors">LinkedIn</a>
+                    <a target='new' href="https://www.instagram.com/capboy_creation?igsh=aTEwZGdpM2d3bnU2" className="text-gray-500 text-sm hover:text-white transition-colors">Instagram</a>
                 </div>
 
             </div>
