@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&family=Syne:wght@700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-primary antialiased;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+
+    /* ARTIX STYLE BACKGROUND: 
+       #030303 is the deepest void black to make content pop. 
+    */
+    background-color: #030303;
+    color: #ffffff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Syne', sans-serif;
+    /* High-End Artistic Headers */
+    letter-spacing: -0.02em;
+  }
+
+  .font-tech {
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+/* Custom Scrollbar - Minimal & Dark */
+::-webkit-scrollbar {
+  width: 6px;
+  /* Thinner for elegance */
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  /* Subtle dark grey thumb */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* ========================================= */
+/* CINEMATIC GRAIN (Artix Style)             */
+/* ========================================= */
+
+.grain-effect {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+
+/* Jitter Animation */
+@keyframes grainAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-5%, -5%);
+  }
+
+  20% {
+    transform: translate(-10%, 5%);
+  }
+
+  30% {
+    transform: translate(5%, -10%);
+  }
+
+  40% {
+    transform: translate(-5%, 10%);
+  }
+
+  50% {
+    transform: translate(-10%, 5%);
+  }
+
+  60% {
+    transform: translate(15%, 0%);
+  }
+
+  70% {
+    transform: translate(0%, 10%);
+  }
+
+  80% {
+    transform: translate(3%, 15%);
+  }
+
+  90% {
+    transform: translate(-5%, 5%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.grain-effect::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+
+  /* CHANGE 1: Lower frequency (0.5) creates naturally "chunkier" noise */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+
+  /* CHANGE 2: ZOOM LEVEL
+     Increased to 400px. This magnifies the grain dots significantly. 
+     (If this is too big, try 350px).
+  */
+  background-size: 400px 400px;
+
+  pointer-events: none;
+  z-index: 9999;
+
+  /* CHANGE 3: Visibility */
+  opacity: 0.07;
+
+  animation: grainAnimation 6s steps(10) infinite;
+}
+
+/* ========================================= */
+/* GLOWING BORDER TRACE ANIMATION            */
+/* ========================================= */
+
+.border-trace span {
+  position: absolute;
+  display: block;
+  z-index: 50;
+  /* Ensure on top of media */
+  pointer-events: none;
+  /* Allow clicks to pass through */
+}
+
+/* Top Line */
+.border-trace span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #a855f7);
+  /* Purple-500 */
+  animation: btn-anim1 4s linear infinite;
+}
+
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+
+/* Right Line */
+.border-trace span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #a855f7);
+  animation: btn-anim2 4s linear infinite;
+  animation-delay: 1s;
+  /* Delay for sequence (4s / 4) */
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+
+/* Bottom Line */
+.border-trace span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(270deg, transparent, #a855f7);
+  animation: btn-anim3 4s linear infinite;
+  animation-delay: 2s;
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+
+/* Left Line */
+.border-trace span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #a855f7);
+  animation: btn-anim4 4s linear infinite;
+  animation-delay: 3s;
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}
