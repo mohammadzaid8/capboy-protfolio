@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+const BASE_URL = "https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev"
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -54,7 +55,7 @@ const Header = () => {
                     {!isHome && (
                         <Link to="/" className="block w-32 md:w-48">
                             <img
-                                src="/assets/home_page/logo/logo.png"
+                                src={`${BASE_URL}/assets/home_page/logo/logo.png`}
                                 alt="Logo"
                                 className={`w-full h-auto object-contain transition-opacity duration-300 ${isOpen ? 'opacity-0' : 'opacity-100'}`}
                             />
