@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: my-3d-website-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 10000
+    disk:
+      name: cache-disk
+      mountPath: /opt/render/project/src/cache
+      sizeGB: 1
