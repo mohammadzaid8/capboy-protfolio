@@ -3,12 +3,17 @@ import { useLocation, Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { PROJECTS } from '../data/projects'
+import StreamingVideo from '../components/StreamingVideo'
+import LazyImage from '../components/LazyImage'
+
+const BASE_URL = "https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev"
+const SHOWREEL_VIDEO_URL = `${BASE_URL}/assets/home_page/logo/intro_video_49mb.mp4`
+const SHOWREEL_POSTER = `${BASE_URL}/assets/works/01_BMW/banner.jpg`
 
 const WorkPage = () => {
     const { pathname } = useLocation()
     const containerRef = useRef(null)
 
-    // Scroll to top
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [pathname])
@@ -16,7 +21,6 @@ const WorkPage = () => {
     useGSAP(() => {
         const tl = gsap.timeline()
 
-        // Header Text Reveal
         tl.from('.work-title-char', {
             y: 100,
             opacity: 0,
@@ -24,16 +28,12 @@ const WorkPage = () => {
             stagger: 0.05,
             ease: "power3.out"
         })
-
-            // Video Reveal
             .from('.work-video-container', {
                 scale: 0.9,
                 opacity: 0,
                 duration: 1.5,
                 ease: "power2.out"
             }, "-=0.5")
-
-            // Grid Reveal
             .from('.work-card', {
                 y: 50,
                 opacity: 0,
@@ -48,7 +48,7 @@ const WorkPage = () => {
         <div ref={containerRef} className="w-full min-h-screen bg-transparent text-white pt-32 pb-24 px-6 md:px-12">
             <div className="max-w-[1400px] mx-auto flex flex-col gap-20">
 
-                {/* 1. Header Section */}
+                {/* Header */}
                 <header className="flex flex-col items-center text-center gap-6">
                     <p className="text-blue-500 font-mono tracking-widest uppercase text-sm">
                         Portfolio
@@ -70,29 +70,23 @@ const WorkPage = () => {
                     </h1>
                 </header>
 
-                {/* 2. Description Video Section */}
+                {/* Showreel Video */}
                 <div className="work-video-container w-full aspect-video rounded-none overflow-hidden relative shadow-2xl border border-white/10 border-trace">
-                    {/* 4 Spans for the Moving Border Animation */}
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
 
-                    <video
-                        className="w-full h-full object-cover opacity-80"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                    >
-                        {/* Using intro video as placeholder - User can replace path */}
-                        <source src="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/home_page/logo/intro_video_49mb.mp4" type="video/mp4" />
-                        {/* <source src="/assets/home_page/logo/intro_video.mp4" type="video/mp4" /> */}
+                    <StreamingVideo
+                        src={SHOWREEL_VIDEO_URL}
+                        poster={SHOWREEL_POSTER}
+                        className="w-full h-full"
+                        rootMargin="50px"
+                        priority={true}
+                    />
 
-                    </video>
-
-                    {/* Overlay Text */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                    {/* Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-20 pointer-events-none">
                         <div className="text-center">
                             <h2 className="text-2xl md:text-4xl font-light tracking-wide">
                                 Engineering The Impossible
@@ -104,18 +98,13 @@ const WorkPage = () => {
                     </div>
                 </div>
 
-                {/* 3. Project Grid */}
-                {/* 3. Project List (Redesigned) */}
+                {/* Project List */}
                 <div className="flex flex-col">
                     {PROJECTS.map((project, index) => (
                         <div key={project.id} className="group-wrapper">
-
-                            {/* Project Content */}
                             <div className="work-card group grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                                {/* Media Column (Left) */}
+                                {/* Media */}
                                 <Link to={project.link} className="block w-full aspect-video rounded-none overflow-hidden border border-white/10 bg-[#111] relative border-trace group-hover:border-white/30 transition-colors">
-
-                                    {/* 4 Spans for the Moving Border Animation */}
                                     <span></span>
                                     <span></span>
                                     <span></span>
@@ -123,31 +112,29 @@ const WorkPage = () => {
 
                                     {project.video ? (
                                         <div className="w-full h-full relative">
-                                            <video
-                                                className="w-full h-full object-cover"
-                                                autoPlay
-                                                muted
-                                                loop
-                                                playsInline
-                                                controls={false}
-                                            >
-                                                <source src={project.video} type="video/mp4" />
-                                            </video>
-                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
+                                            <StreamingVideo
+                                                src={project.video}
+                                                poster={project.home_page_card_banner || project.img}
+                                                className="w-full h-full"
+                                                rootMargin="300px"
+                                            />
+                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 pointer-events-none z-10" />
                                         </div>
                                     ) : (
                                         <div className="w-full h-full relative">
-                                            <img
-                                                src={project.img}
+                                            <LazyImage
+                                                src={project.home_page_card_banner || project.img}
                                                 alt={project.title}
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                className="w-full h-full object-cover"
+                                                containerClassName="w-full h-full"
+                                                rootMargin="200px"
                                             />
-                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
+                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 pointer-events-none z-10" />
                                         </div>
                                     )}
                                 </Link>
 
-                                {/* Text Column (Right) */}
+                                {/* Text */}
                                 <div className="flex flex-col gap-6 items-start">
                                     <div className="space-y-2">
                                         <span className="text-blue-500 font-mono text-sm tracking-wider">
@@ -175,20 +162,16 @@ const WorkPage = () => {
                                 </div>
                             </div>
 
-                            {/* Cinematic Divider (Only between items) */}
+                            {/* Divider */}
                             {index !== PROJECTS.length - 1 && (
                                 <div className="relative py-24 lg:py-32 flex items-center justify-center opacity-30">
-                                    {/* Line */}
                                     <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-                                    {/* Center Accent */}
                                     <div className="absolute w-3 h-3 bg-[#0a0a0a] border border-blue-500 rotate-45 flex items-center justify-center">
                                         <div className="w-1 h-1 bg-blue-500 rounded-full" />
                                     </div>
                                 </div>
                             )}
-                            {/* Bottom spacing for last item */}
                             {index === PROJECTS.length - 1 && <div className="mb-24" />}
-
                         </div>
                     ))}
                 </div>

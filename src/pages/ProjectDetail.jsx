@@ -3,12 +3,14 @@ import { useParams, Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import StreamingVideo from '../components/StreamingVideo'
+import LazyImage from '../components/LazyImage'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const BASE_URL = "https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev"
 
-// Dummy Data Lookup (Ideally this comes from a CMS or separate data file)
+// Project Data with video posters
 const PROJECTS = {
     'art-of-speed': {
         title: 'ART OF SPEED',
@@ -18,7 +20,7 @@ const PROJECTS = {
         engine: 'Unreal Engine 5.4 (Path Tracing / Lumen) and blender',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: `${BASE_URL}/assets/works/01_BMW/main.mp4` },
+            { type: 'video', src: `${BASE_URL}/assets/works/01_BMW/main.mp4`, poster: `${BASE_URL}/assets/works/01_BMW/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/02.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/01_BMW/03.jpg` },
@@ -30,9 +32,7 @@ const PROJECTS = {
     'jet-plan': {
         title: 'Bombardier Challenger 350 jet',
         subtitle: 'A VISION OF LUXURY IN MOTION',
-        description: `This project showcases a complete 3D animation of the Bombardier Challenger 350 jet , focusing on both the interior and exterior. I handled every aspect of the production, from modeling, texturing, and lighting to rendering and animation, ensuring an ultra-realistic result.
-To create a high-quality animation for a client that highlights the luxury and performance of the jet, capturing its sleek design and premium interior.
-Using Blender, I developed detailed models and textures for the jet's interior and exterior, combined with precise lighting and composition.`,
+        description: `This project showcases a complete 3D animation of the Bombardier Challenger 350 jet, focusing on both the interior and exterior. I handled every aspect of the production, from modeling, texturing, and lighting to rendering and animation, ensuring an ultra-realistic result.`,
         role: '3D/Director/SFX/Animation/Music/Edit : capboy_creation',
         engine: 'Blender 4.4.1',
         youtubeLink: '#',
@@ -49,12 +49,12 @@ Using Blender, I developed detailed models and textures for the jet's interior a
     'mustang': {
         title: '1969 Apex Predator',
         subtitle: 'The beast has finally woken up',
-        description: 'This cinematic short film was created entirely in Unreal Engine 5. It explores the connection between man and machine, featuring a 1969 Ford Mustang and the legend of John Bowe.This entire commercial was created using Unreal Engine 5 (CGI). The goal was to push the limits of automotive rendering, blending photorealistic lighting with an emotional story.',
+        description: 'This cinematic short film was created entirely in Unreal Engine 5. It explores the connection between man and machine, featuring a 1969 Ford Mustang and the legend of John Bowe.',
         role: '3D/Director/SFX/Animation/Music/Edit : capboy_creation',
         engine: 'Unreal Engine 5.4 (Path Tracing / Lumen)',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: `${BASE_URL}/assets/works/03_mustang/main.mp4` },
+            { type: 'video', src: `${BASE_URL}/assets/works/03_mustang/main.mp4`, poster: `${BASE_URL}/assets/works/03_mustang/01.png` },
             { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/01.png` },
             { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/02.png` },
             { type: 'image', src: `${BASE_URL}/assets/works/03_mustang/03.png` },
@@ -66,12 +66,12 @@ Using Blender, I developed detailed models and textures for the jet's interior a
     'yacht': {
         title: 'YACHT',
         subtitle: 'WATER SIMULATION',
-        description: 'This project highlights a 3D yacht render featuring dynamic water simulation, achieving a lifelike and immersive visual experience. The entire production was crafted using Blender, from modeling to final rendering.I utilized advanced water simulation techniques to replicate realistic ocean waves, combined with precise texturing and lighting to bring the yacht and its surroundings to life. The composition and rendering focused on capturing the elegance of the yacht with photorealistic detail.',
+        description: 'This project highlights a 3D yacht render featuring dynamic water simulation, achieving a lifelike and immersive visual experience.',
         role: 'water simulation/Animation/Edit : capboy_creation',
         engine: 'Blender water simulation',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: `${BASE_URL}/assets/works/04_yatch/main.mp4` },
+            { type: 'video', src: `${BASE_URL}/assets/works/04_yatch/main.mp4`, poster: `${BASE_URL}/assets/works/04_yatch/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/02.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/04_yatch/03.jpg` },
@@ -88,7 +88,7 @@ Using Blender, I developed detailed models and textures for the jet's interior a
         engine: 'Unreal Engine 5.4 (Path Tracing / Lumen)',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: `${BASE_URL}/assets/works/05_porche/main.mp4` },
+            { type: 'video', src: `${BASE_URL}/assets/works/05_porche/main.mp4`, poster: `${BASE_URL}/assets/works/05_porche/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/05_porche/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/05_porche/02.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/05_porche/03.jpg` },
@@ -100,12 +100,12 @@ Using Blender, I developed detailed models and textures for the jet's interior a
     'game-environment': {
         title: 'GAME ENVIRONMENT',
         subtitle: '3D ENVIRONMENTS',
-        description: `Immerse yourself in a stunning CGI animation featuring Ironman like never before! Created using the cutting-edge Blender software, this project transports you into a lush forest world where Ironman's character comes to life through mesmerizing animation. Crafted over just 8 weeks, this visually captivating journey blends technology and storytelling seamlessly, offering a truly immersive experience for fans of Ironman and animation enthusiasts alike`,
+        description: `Immerse yourself in a stunning CGI animation featuring Ironman like never before! Created using the cutting-edge Blender software.`,
         role: '3D/Director/SFX/Animation/Edit : capboy_creation',
         engine: 'Blender 4.4.1',
         youtubeLink: '#',
         media: [
-            { type: 'video', src: `${BASE_URL}/assets/works/06_game_env/main.mp4` },
+            { type: 'video', src: `${BASE_URL}/assets/works/06_game_env/main.mp4`, poster: `${BASE_URL}/assets/works/06_game_env/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/01.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/02.jpg` },
             { type: 'image', src: `${BASE_URL}/assets/works/06_game_env/03.jpg` },
@@ -118,7 +118,7 @@ Using Blender, I developed detailed models and textures for the jet's interior a
 
 const ProjectDetail = () => {
     const { slug } = useParams()
-    const project = PROJECTS[slug] || PROJECTS['art-of-speed'] // Fallback for demo
+    const project = PROJECTS[slug] || PROJECTS['art-of-speed']
 
     const containerRef = useRef(null)
     const leftColRef = useRef(null)
@@ -131,7 +131,6 @@ const ProjectDetail = () => {
     useGSAP(() => {
         const tl = gsap.timeline()
 
-        // Animate Left Column Content (Text)
         tl.from(leftColRef.current.children, {
             y: 50,
             opacity: 0,
@@ -141,14 +140,13 @@ const ProjectDetail = () => {
             delay: 0.2
         })
 
-        // Animate Right Column Content (Media)
         tl.from(rightColRef.current.children, {
             y: 100,
             opacity: 0,
             duration: 1.2,
             stagger: 0.15,
             ease: "power2.out"
-        }, "-=0.8") // Overlap slightly with text animation
+        }, "-=0.8")
 
     }, { scope: containerRef })
 
@@ -157,11 +155,9 @@ const ProjectDetail = () => {
     return (
         <div ref={containerRef} className="w-full min-h-screen bg-[#0a0a0a] text-white mb-24">
 
-
-
             <div className="flex flex-col lg:flex-row w-full max-w-[1600px] mx-auto pt-32 lg:pt-48 px-4 lg:px-12 pb-32">
 
-                {/* Left Column - Sticky Content */}
+                {/* Left Column */}
                 <div className="w-full lg:w-1/3 mb-12 lg:mb-0 relative">
                     <div ref={leftColRef} className="lg:sticky lg:top-48 flex flex-col items-start gap-8">
                         <div className="text-gray-400 font-mono text-sm tracking-widest uppercase">
@@ -201,31 +197,32 @@ const ProjectDetail = () => {
                     </div>
                 </div>
 
-                {/* Right Column - Scrollable Media */}
+                {/* Right Column - Media */}
                 <div ref={rightColRef} className="w-full lg:w-2/3 flex flex-col gap-4 lg:gap-8 lg:pl-12">
                     {project.media.map((item, index) => (
                         <div key={index} className="w-full rounded-none overflow-hidden border border-white/5 bg-[#111] relative border-trace">
-                            {/* 4 Spans for the Moving Border Animation */}
                             <span></span>
                             <span></span>
                             <span></span>
                             <span></span>
 
                             {item.type === 'video' ? (
-                                <video
+                                <StreamingVideo
                                     src={item.src}
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    className="w-full h-auto object-cover"
-                                    controls
+                                    poster={item.poster}
+                                    className="w-full aspect-video"
+                                    controls={true}
+                                    rootMargin="400px"
+                                    autoPlay={true}
+                                    loop={true}
                                 />
                             ) : (
-                                <img
+                                <LazyImage
                                     src={item.src}
-                                    alt={`${project.title} detailed shot ${index}`}
+                                    alt={`${project.title} - ${index}`}
                                     className="w-full h-auto object-cover"
+                                    containerClassName="w-full min-h-[200px]"
+                                    rootMargin="400px"
                                 />
                             )}
                         </div>
@@ -239,4 +236,3 @@ const ProjectDetail = () => {
 }
 
 export default ProjectDetail
-

@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { PROJECTS } from '../data/projects'
 import TextScramble from './TextScramble'
 import TiltCard from './TiltCard'
+import LazyImage from './LazyImage'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -152,11 +153,13 @@ const Work = () => {
                                 <div
                                     className="group relative w-full h-full aspect-[16/10] rounded-none border border-white/10 bg-[#111] overflow-hidden shadow-2xl cursor-pointer"
                                 >
-                                    {/* Background Image */}
-                                    <img
+                                    {/* Background Image - Lazy Loaded */}
+                                    <LazyImage
                                         src={project.home_page_card_banner ? project.home_page_card_banner : project.img}
                                         alt={project.title}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        containerClassName="w-full h-full"
+                                        rootMargin="300px"
                                     />
 
                                     {/* Dark Gradient Overlay (Bottom) */}
