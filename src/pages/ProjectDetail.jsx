@@ -212,7 +212,8 @@ const ProjectDetail = () => {
                                     poster={item.poster}
                                     className="w-full aspect-video"
                                     controls={true}
-                                    rootMargin="400px"
+                                    rootMargin={index === 0 ? '0px' : '50px'}
+                                    priority={index === 0}
                                     autoPlay={true}
                                     loop={true}
                                 />

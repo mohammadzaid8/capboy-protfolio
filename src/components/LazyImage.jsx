@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
+import { getImageObjectUrl, hasAsset } from '../lib/assetCache'
 
 /**
  * LazyImage - Optimized image component with:
@@ -21,6 +22,13 @@ const LazyImage = ({
     const [shouldLoad, setShouldLoad] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
     const [hasError, setHasError] = useState(false)
+
+    const resolvedSrc = useMemo(() => {
+        if (hasAsset(src)) {
+            return getImageObjectUrl(src) || src
+        }
+        return src
+    }, [src])
 
     // Intersection Observer for lazy loading
     useEffect(() => {
@@ -71,7 +79,7 @@ const LazyImage = ({
             {/* Image - Only renders when near viewport */}
             {shouldLoad && !hasError && (
                 <img
-                    src={src}
+                    src={resolvedSrc}
                     alt={alt}
                     loading="lazy"
                     decoding="async"

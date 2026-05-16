@@ -3,8 +3,6 @@ import { useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Helper } from '@react-three/drei'
-
 gsap.registerPlugin(ScrollTrigger)
 import Footer from './Footer'
 import CallToAction from './CallToAction'
@@ -15,14 +13,15 @@ const Layout = ({ children }) => {
     const { pathname } = useLocation()
 
     useEffect(() => {
-        // Initialize Lenis with "super smooth" settings
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
         const lenis = new Lenis({
-            duration: 2.5, // Much slower, smoother settle
+            duration: prefersReducedMotion ? 0.8 : 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             direction: 'vertical',
             gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1.5, // Increased sensitivity for smoother control
+            smooth: !prefersReducedMotion,
+            mouseMultiplier: 1.2,
             smoothTouch: false,
             touchMultiplier: 2,
         })

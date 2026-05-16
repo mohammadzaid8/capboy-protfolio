@@ -6,9 +6,11 @@ import { PROJECTS } from '../data/projects'
 import StreamingVideo from '../components/StreamingVideo'
 import LazyImage from '../components/LazyImage'
 
-const BASE_URL = "https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev"
-const SHOWREEL_VIDEO_URL = `${BASE_URL}/assets/home_page/logo/intro_video_49mb.mp4`
-const SHOWREEL_POSTER = `${BASE_URL}/assets/works/01_BMW/banner.jpg`
+import { INTRO_POSTER, getIntroVideoUrl } from '../lib/assetManifest'
+import { isVideoReady } from '../lib/assetCache'
+
+const SHOWREEL_VIDEO_URL = getIntroVideoUrl()
+const SHOWREEL_POSTER = INTRO_POSTER
 
 const WorkPage = () => {
     const { pathname } = useLocation()
@@ -81,8 +83,8 @@ const WorkPage = () => {
                         src={SHOWREEL_VIDEO_URL}
                         poster={SHOWREEL_POSTER}
                         className="w-full h-full"
-                        rootMargin="50px"
-                        priority={true}
+                        rootMargin="0px"
+                        priority={!isVideoReady(SHOWREEL_VIDEO_URL)}
                     />
 
                     {/* Overlay */}
@@ -116,7 +118,7 @@ const WorkPage = () => {
                                                 src={project.video}
                                                 poster={project.home_page_card_banner || project.img}
                                                 className="w-full h-full"
-                                                rootMargin="300px"
+                                                rootMargin="0px"
                                             />
                                             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 pointer-events-none z-10" />
                                         </div>

@@ -9,37 +9,59 @@ import WorkPage from './pages/WorkPage'
 
 import MouseTrail from './components/MouseTrail'
 import VerticalLinesBackground from './components/VerticalLinesBackground'
-
-// ... imports
-import { useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import Preloader from './components/Preloader'
+import { AssetQueueProvider } from './context/AssetQueueContext'
+import { useAssetPreloader } from './hooks/useAssetPreloader'
+import { useMemo } from 'react'
 
-function App() {
-    const [isLoading, setIsLoading] = useState(true)
+function AppContent() {
+    const { progress, statusText, currentLabel, previewUrls, isReady } = useAssetPreloader()
+
+    const showMouseTrail = useMemo(() => {
+        if (typeof window === 'undefined') return true
+        return !window.matchMedia('(pointer: coarse)').matches
+    }, [])
 
     return (
         <div className="grain-effect">
             <AnimatePresence mode="wait">
-                {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+                {!isReady && (
+                    <Preloader
+                        progress={progress}
+                        statusText={statusText}
+                        currentLabel={currentLabel}
+                        previewUrls={previewUrls}
+                    />
+                )}
             </AnimatePresence>
 
-            <MouseTrail color="#4f46e5" size={3} spacing={8} fadeDuration={0.8} />
-            <VerticalLinesBackground />
-            <Router>
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/work/:slug" element={<ProjectDetail />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/work" element={<WorkPage />} />
-                        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                        <Route path="/terms-of-use" element={<TermsOfUse />} />
-                    </Routes>
-                </Layout>
-            </Router>
+            {isReady && (
+                <AssetQueueProvider>
+                    {showMouseTrail && (
+                        <MouseTrail color="#4f46e5" size={3} spacing={8} fadeDuration={0.8} />
+                    )}
+                    <VerticalLinesBackground />
+                    <Router>
+                        <Layout>
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/work/:slug" element={<ProjectDetail />} />
+                                <Route path="/about" element={<About />} />
+                                <Route path="/work" element={<WorkPage />} />
+                                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                                <Route path="/terms-of-use" element={<TermsOfUse />} />
+                            </Routes>
+                        </Layout>
+                    </Router>
+                </AssetQueueProvider>
+            )}
         </div>
     )
+}
+
+function App() {
+    return <AppContent />
 }
 
 export default App

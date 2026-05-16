@@ -1,10 +1,15 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import {
+    INTRO_POSTER,
+    INTRO_LOGO,
+    getIntroVideoUrl,
+    shouldSkipVideoPreload,
+} from '../lib/assetManifest'
+import { getImageObjectUrl, isVideoReady } from '../lib/assetCache'
 
-const BASE_URL = "https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev"
-const INTRO_VIDEO_URL = `${BASE_URL}/assets/home_page/logo/intro_video_49mb.mp4`
-const INTRO_POSTER = `${BASE_URL}/assets/works/01_BMW/banner.jpg`
+const INTRO_VIDEO_URL = getIntroVideoUrl()
 
 const Intro = () => {
     const containerRef = useRef(null)
@@ -12,9 +17,13 @@ const Intro = () => {
     const overlayRef = useRef(null)
     const logoRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [showVideo, setShowVideo] = useState(!shouldSkipVideoPreload())
     const playAttempted = useRef(false)
 
-    // Aggressive play - start as soon as ANY data available
+    const posterSrc = getImageObjectUrl(INTRO_POSTER) || INTRO_POSTER
+    const logoSrc = getImageObjectUrl(INTRO_LOGO) || INTRO_LOGO
+    const videoPreloaded = isVideoReady(INTRO_VIDEO_URL)
+
     const attemptPlay = useCallback(() => {
         const video = videoRef.current
         if (!video || playAttempted.current) return
@@ -36,7 +45,7 @@ const Intro = () => {
 
     useEffect(() => {
         const video = videoRef.current
-        if (!video) return
+        if (!video || !showVideo) return
 
         const onLoadedData = () => attemptPlay()
         const onCanPlay = () => attemptPlay()
@@ -50,13 +59,17 @@ const Intro = () => {
         video.addEventListener('progress', onProgress)
         video.addEventListener('playing', onPlaying)
 
+        if (videoPreloaded && video.readyState >= 2) {
+            attemptPlay()
+        }
+
         return () => {
             video.removeEventListener('loadeddata', onLoadedData)
             video.removeEventListener('canplay', onCanPlay)
             video.removeEventListener('progress', onProgress)
             video.removeEventListener('playing', onPlaying)
         }
-    }, [attemptPlay])
+    }, [attemptPlay, showVideo, videoPreloaded])
 
     useGSAP(() => {
         const tl = gsap.timeline()
@@ -67,37 +80,42 @@ const Intro = () => {
             opacity: 0,
             y: 100,
             scale: 1.1,
-            filter: 'blur(20px)'
+            filter: 'blur(20px)',
         })
 
         tl.to(videoRef.current, {
             scale: 1,
             duration: 2.5,
-            ease: "power2.out"
+            ease: 'power2.out',
         })
-            .to(overlayRef.current, {
-                opacity: 1,
-                duration: 1.5,
-                ease: "power2.out"
-            }, "-=2")
-            .to(logoRef.current, {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                filter: 'blur(0px)',
-                duration: 1.8,
-                ease: "power4.out"
-            }, "-=1.2")
-
+            .to(
+                overlayRef.current,
+                {
+                    opacity: 1,
+                    duration: 1.5,
+                    ease: 'power2.out',
+                },
+                '-=2'
+            )
+            .to(
+                logoRef.current,
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: 'blur(0px)',
+                    duration: 1.8,
+                    ease: 'power4.out',
+                },
+                '-=1.2'
+            )
     }, { scope: containerRef })
 
     return (
         <section ref={containerRef} className="relative h-screen w-full overflow-hidden bg-black">
-
             <div className="absolute inset-0 z-0">
-                {/* Poster - INSTANT display */}
                 <img
-                    src={INTRO_POSTER}
+                    src={posterSrc}
                     alt=""
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200 ${
                         isPlaying ? 'opacity-0' : 'opacity-100'
@@ -108,31 +126,42 @@ const Intro = () => {
                     fetchpriority="high"
                 />
 
-                {/* Video - Streams chunks */}
-                <video
-                    ref={videoRef}
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    className={`w-full h-full object-cover transition-opacity duration-200 ${
-                        isPlaying ? 'opacity-100' : 'opacity-0'
-                    }`}
-                >
-                    <source src={INTRO_VIDEO_URL} type="video/mp4" />
-                </video>
+                {showVideo && (
+                    <video
+                        ref={videoRef}
+                        muted
+                        loop
+                        playsInline
+                        preload={videoPreloaded ? 'auto' : 'metadata'}
+                        className={`w-full h-full object-cover transition-opacity duration-200 ${
+                            isPlaying ? 'opacity-100' : 'opacity-0'
+                        }`}
+                    >
+                        <source src={INTRO_VIDEO_URL} type="video/mp4" />
+                    </video>
+                )}
+
+                {shouldSkipVideoPreload() && !showVideo && (
+                    <button
+                        type="button"
+                        onClick={() => setShowVideo(true)}
+                        className="absolute inset-0 z-20 flex items-center justify-center bg-black/40 text-white font-mono text-sm uppercase tracking-widest"
+                    >
+                        Tap to play showreel
+                    </button>
+                )}
             </div>
 
-            <div ref={overlayRef} className="absolute inset-0 z-0 bg-black/30"></div>
+            <div ref={overlayRef} className="absolute inset-0 z-0 bg-black/30" />
 
-            <div className="absolute bottom-0 left-0 w-full h-[60vh] bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-full h-[60vh] bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-10 pointer-events-none" />
 
             <div className="absolute inset-0 z-10 flex items-end pb-24 md:pb-32 justify-center px-4">
                 <div ref={logoRef} className="flex flex-col items-center w-full max-w-[1600px] gap-8">
                     <div className="w-full flex justify-center">
                         <div className="w-full">
                             <img
-                                src={`${BASE_URL}/assets/home_page/logo/intro_logo.png`}
+                                src={logoSrc}
                                 alt="Artix Studios"
                                 className="w-full h-auto object-contain"
                                 loading="eager"
@@ -142,7 +171,6 @@ const Intro = () => {
                     </div>
                 </div>
             </div>
-
         </section>
     )
 }

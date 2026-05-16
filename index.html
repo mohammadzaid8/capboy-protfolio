@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev" crossorigin>
   <link rel="dns-prefetch" href="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev">
   
-  <!-- Preload critical hero assets - starts downloading immediately -->
-  <link rel="preload" href="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/works/01_BMW/banner.jpg" as="image">
-  <link rel="preload" href="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/home_page/logo/intro_logo.png" as="image">
+  <!-- Critical path assets (also loaded by AssetLoader) -->
+  <link rel="preload" href="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/works/01_BMW/banner.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="https://pub-22f00052526b4a6087e6351b8539a93d.r2.dev/assets/home_page/logo/intro_logo.png" as="image" fetchpriority="high">
   
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
